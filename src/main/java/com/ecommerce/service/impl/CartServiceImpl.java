@@ -5,6 +5,7 @@ import com.ecommerce.dto.CartItemDTO;
 import com.ecommerce.entity.CartItem;
 import com.ecommerce.entity.Product;
 import com.ecommerce.entity.User;
+import com.ecommerce.exception.BadRequestException;
 import com.ecommerce.exception.ResourceNotFoundException;
 import com.ecommerce.mapper.CartItemMapper;
 import com.ecommerce.repository.CartItemRepository;
@@ -51,6 +52,10 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional
     public CartItemDTO addItemToCart(Long productId, Integer quantity) {
+        if (quantity <= 0) {
+            throw new BadRequestException("Quantity must be positive");
+        }
+
         User user = getAuthenticatedUser();
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
@@ -70,6 +75,10 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional
     public CartItemDTO updateItemQuantity(Long cartItemId, Integer quantity) {
+        if (quantity <= 0) {
+            throw new BadRequestException("Quantity must be positive");
+        }
+
         User user = getAuthenticatedUser();
         CartItem cartItem = cartItemRepository.findById(cartItemId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cart item not found"));

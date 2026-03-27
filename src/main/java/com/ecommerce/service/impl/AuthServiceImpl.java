@@ -56,12 +56,8 @@ public class AuthServiceImpl implements AuthService {
             throw new RuntimeException("Error: Username is already taken!");
         }
 
+        // Always assign ROLE_USER on signup - role escalation only through admin panel
         Role role = Role.ROLE_USER;
-        if (signupRequest.getRole() != null) {
-            if (signupRequest.getRole().equalsIgnoreCase("admin")) {
-                role = Role.ROLE_ADMIN;
-            }
-        }
 
         User user = User.builder()
                 .username(signupRequest.getUsername())
