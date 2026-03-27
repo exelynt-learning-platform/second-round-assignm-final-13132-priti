@@ -7,6 +7,7 @@ import com.ecommerce.entity.Product;
 import com.ecommerce.entity.User;
 import com.ecommerce.exception.BadRequestException;
 import com.ecommerce.exception.ResourceNotFoundException;
+import com.ecommerce.exception.UnauthorizedException;
 import com.ecommerce.mapper.CartItemMapper;
 import com.ecommerce.repository.CartItemRepository;
 import com.ecommerce.repository.ProductRepository;
@@ -84,7 +85,7 @@ public class CartServiceImpl implements CartService {
                 .orElseThrow(() -> new ResourceNotFoundException("Cart item not found"));
 
         if (!cartItem.getUser().getId().equals(user.getId())) {
-            throw new RuntimeException("Unauthorized access to cart item");
+            throw new UnauthorizedException("Unauthorized access to cart item");
         }
 
         cartItem.setQuantity(quantity);
@@ -100,7 +101,7 @@ public class CartServiceImpl implements CartService {
                 .orElseThrow(() -> new ResourceNotFoundException("Cart item not found"));
 
         if (!cartItem.getUser().getId().equals(user.getId())) {
-            throw new RuntimeException("Unauthorized access to cart item");
+            throw new UnauthorizedException("Unauthorized access to cart item");
         }
 
         cartItemRepository.delete(cartItem);

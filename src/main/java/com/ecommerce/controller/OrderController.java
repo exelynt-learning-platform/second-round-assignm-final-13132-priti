@@ -42,13 +42,13 @@ public class OrderController {
 
         PaymentIntent intent = paymentService.createPaymentIntent(order.getTotalAmount());
         
-        // In a real app, you'd handle the success/failure from the client side or via webhook.
-        // For this demo, we simulate a success and update status.
-        orderService.updateOrderStatus(orderId, "PAID");
+        // Note: In production, implement webhook handling for payment confirmation
+        // Order status should only be updated to PAID after successful payment confirmation
+        // For demo purposes, status remains as CREATED until payment is confirmed
 
         Map<String, String> response = new HashMap<>();
         response.put("clientSecret", intent.getClientSecret());
-        response.put("status", "Payment Intent Created & Order Marked PAID (Demo)");
+        response.put("status", "Payment Intent Created - Confirm payment to complete order");
         return ResponseEntity.ok(response);
     }
 }
